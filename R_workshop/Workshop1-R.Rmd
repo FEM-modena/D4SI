@@ -1,0 +1,376 @@
+---
+title: "Introduction to R"
+author: "Lorenzo Andreoli & Data Carpentry contributors"
+minutes: 45
+---
+
+```{r, echo = FALSE, purl = FALSE, message = FALSE}
+
+```
+
+## Creare oggetti in R
+
+```{r, echo = FALSE, purl = TRUE}
+### Creare oggetti in R
+```
+
+Si può ottenere l'output di R semplicemente digitando la matematica nella console:
+
+```{r, purl = FALSE}
+3 + 5
+12 / 7
+```
+
+Tuttavia, per fare cose utili e interessanti, abbiamo bisogno di assegnare _valori_ a
+_oggetti_. Per creare un oggetto, dobbiamo dargli un nome seguito dall'operatore di assegnazione
+operatore di assegnazione `<-`, e il valore che vogliamo dargli:
+
+```{r, purl = FALSE}
+weight_kg <- 55
+```
+
+`<-` è l'operatore di assegnazione. Assegna valori sulla destra a oggetti sulla
+sinistra. Così, dopo aver eseguito `x <- 3`, il valore di `x` è `3`. La freccia sembra anche una bocca (con la lingua), il che la rende facile da pronunciare come `x` **mangia** 3. Per ragioni storiche, puoi anche usare `=`
+per le assegnazioni, ma non in ogni contesto. A causa del
+[lieve](https://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html)
+[differenze](https://r.789695.n4.nabble.com/Is-there-any-difference-between-and-tp878594p878598.html)
+nella sintassi, è buona pratica usare sempre `<-` per le assegnazioni. 
+
+In RStudio, digitando <kbd>Alt</kbd> + <kbd>-</kbd> (premendo <kbd>Alt</kbd> allo
+contemporaneamente al tasto <kbd>-</kbd>) scriverà ` <- ` in un singolo colpo di tasto in un PC, mentre digitando <kbd>Option</kbd> + <kbd>-</kbd> (premere <kbd>Option</kbd> allo
+contemporaneamente al tasto <kbd>-</kbd>) fa lo stesso in un Mac.
+
+Agli oggetti può essere dato quasi qualsiasi nome come `x`, `temperatura_corrente`, o `subject_id`. Ecco alcune ulteriori linee guida sulla denominazione degli oggetti:
+
+* Vuoi che i nomi dei tuoi oggetti siano espliciti e non troppo lunghi.
+* Non possono iniziare con un numero (`2x` non è valido, ma `x2` sì).
+* R è sensibile alle maiuscole e alle minuscole, quindi, per esempio, `weight_kg` è diverso da `Weight_kg`.
+* Ci sono alcuni nomi che non possono essere usati perché sono i nomi di funzioni fondamentali in R (per esempio, `if`, `else`, `for`, vedi
+[qui](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html)
+per una lista completa). In generale, anche se è permesso, è meglio non usare
+altri nomi di funzioni (ad esempio, `c`, `T`, `mean`, `data`, `df`, `weights`). Se sei in
+dubbio, controlla l'aiuto per vedere se il nome è già in uso. 
+* È meglio evitare i punti (`.`) all'interno dei nomi. Molti nomi di funzioni in R stesso li hanno e i punti hanno anche un significato speciale (metodi) in R e in altri linguaggi di programmazione. Per evitare confusione, non includere punti nei nomi.
+* Si raccomanda di usare nomi per i nomi degli oggetti e verbi per i nomi delle funzioni.
+* Siate coerenti nello stile del vostro codice, come ad esempio dove mettete gli spazi, come nominate gli oggetti, ecc. Usare uno stile di codifica coerente rende il tuo codice più chiaro da leggere per il tuo futuro e per i tuoi collaboratori. In R, tre popolari guide di stile vengono da [Google](https://google.github.io/styleguide/Rguide.xml), [Jean
+Fan](https://jef.works/R-style-guide/) e da
+tidyverse](https://style.tidyverse.org/). Lo stile tidyverse è molto completo e può sembrare travolgente all'inizio. Puoi installare il pacchetto [**`lintr`**](https://github.com/jimhester/lintr) per controllare automaticamente i problemi nello stile del tuo codice.
+
+
+> ### Oggetti vs. variabili
+>
+> Quelli che sono conosciuti come "oggetti" in "R" sono conosciuti come "variabili" in molti altri
+> linguaggi di programmazione. A seconda del contesto, "oggetto" e "variabile" possono
+> avere significati drasticamente diversi. Comunque, in questa lezione, le due parole
+> sono usate come sinonimi. Per maggiori informazioni vedi:
+> https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects
+
+Quando si assegna un valore a un oggetto, R non stampa nulla. Potete forzare R a stampare il valore usando le parentesi o digitando il nome dell'oggetto:
+
+```{r, purl = FALSE}
+peso_kg <- 55    # non stampa nulla
+(peso_kg <- 55)  # ma mettendo le parentesi intorno alla chiamata si stampa il valore di `peso_kg
+peso_kg          # e lo stesso vale per la digitazione del nome dell'oggetto
+```
+
+Ora che R ha `peso_kg` in memoria, possiamo fare aritmetica con esso. Per
+esempio, potremmo voler convertire questo peso in libbre (il peso in libbre è 2,2 volte il peso in kg):
+
+```{r, purl = FALSE}
+2.2 * peso_kg
+```
+
+Possiamo anche cambiare il valore di un oggetto assegnandogliene uno nuovo:
+
+```{r, purl = FALSE}
+peso_kg <- 70.5
+2.2 * peso_kg
+```
+
+Questo significa che assegnare un valore ad un oggetto non cambia i valori di
+altri oggetti. Per esempio, memorizziamo il peso dell'animale in libbre in un nuovo
+oggetto, `peso_lb`:
+
+```{r, purl = FALSE}
+weight_lb <- 2.2 * weight_kg
+```
+
+e poi assegnare a `peso_kg` il valore 100.
+
+```{r, purl = FALSE}
+peso_kg <- 100
+```
+
+Quale pensate sia il contenuto attuale dell'oggetto `peso_lb`? 126,5 o 220?
+
+### Salva il tuo codice
+
+Fino ad ora, il vostro codice è stato nella console. Questo è utile per rapide interrogazioni
+ma non così utile se si vuole rivedere il proprio lavoro per qualsiasi motivo.
+Uno script può essere aperto premendo <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + 
+<kbd>N</kbd>. 
+È saggio salvare immediatamente il file dello script. Per fare questo premere 
+<kbd>Ctrl</kbd> + <kbd>S</kbd>. Questo aprirà una finestra di dialogo dove 
+puoi decidere dove salvare il tuo file di script e come chiamarlo.
+L'estensione del file `.R` viene aggiunta automaticamente e assicura che il tuo file
+si aprirà con RStudio.
+
+Non dimenticate di salvare periodicamente il vostro lavoro premendo <kbd>Ctrl</kbd> + 
+<kbd>S</kbd>.
+
+
+### Commenti
+
+Il carattere di commento in R è `#`, qualsiasi cosa a destra di un `#` in uno script
+sarà ignorato da R. È utile lasciare note e spiegazioni nei vostri
+script.
+RStudio rende facile commentare o scommentare un paragrafo: dopo aver selezionato le
+righe che volete commentare, premete contemporaneamente sulla vostra tastiera
+<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>. Se volete commentare solo
+una linea, puoi mettere il cursore in qualsiasi punto di quella linea (cioè non c'è bisogno 
+selezionare l'intera linea), quindi premere <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + 
+<kbd>C</kbd>.
+
+> ### Sfida
+>
+> Quali sono i valori dopo ogni dichiarazione nel seguente?
+>
+> ```{r, purl = FALSE}
+> massa <- 47.5 # massa?
+> età <- 122 # età?
+> massa <- massa * 2.0 # massa?
+> età <- età - 20 # età?
+> mass_index <- massa/età # mass_index?
+> ```
+
+```{r, echo = FALSE, purl = TRUE}
+### Challenge
+##
+## What are the values after each statement in the following?
+##
+## mass <- 47.5            # mass?
+## age  <- 122             # age?
+## mass <- mass * 2.0      # mass?
+## age  <- age - 20        # age?
+## mass_index <- mass/age  # mass_index?
+```
+
+### Funzioni e loro argomenti
+
+Le funzioni sono "script in scatola" che automatizzano insiemi più complicati di comandi
+comprese le assegnazioni di operazioni, ecc. Molte funzioni sono predefinite o possono essere
+rese disponibili importando i *pacchetti* di R (ne parleremo più avanti). Una funzione
+di solito prende uno o più input chiamati *argomenti*. Le funzioni spesso (ma non
+sempre) restituiscono un *valore*. Un tipico esempio potrebbe essere la funzione `sqrt()`. Il
+input (l'argomento) deve essere un numero, e il valore di ritorno (in effetti, l
+uscita) è la radice quadrata di quel numero. L'esecuzione di una funzione ("eseguirla")
+si chiama *chiamare* la funzione. Un esempio di chiamata di funzione è:
+
+```{r, eval = FALSE, purl = FALSE}
+peso_kg <- sqrt(10)
+```
+
+Qui, il valore di 10 è dato alla funzione `sqrt()`, la funzione `sqrt()`
+calcola la radice quadrata e restituisce il valore che viene poi assegnato a
+all'oggetto `peso_kg`. Questa funzione è molto semplice, perché prende solo un argomento.
+
+Il "valore" di ritorno di una funzione non deve necessariamente essere numerico (come quello di `sqrt()`),
+e non ha nemmeno bisogno di essere un singolo elemento: può essere un insieme di cose, o
+anche un insieme di dati. Lo vedremo quando leggeremo i file di dati in R.
+
+Gli argomenti possono essere qualsiasi cosa, non solo numeri o nomi di file, ma anche altri
+oggetti. Esattamente il significato di ogni argomento varia a seconda della funzione, e deve essere
+cercare nella documentazione (vedi sotto). Alcune funzioni prendono argomenti che
+possono essere specificati dall'utente o, se omessi, assumono un valore *default*:
+Queste sono chiamate *opzioni*. Le opzioni sono tipicamente usate per alterare il modo in cui la
+funzione, come ad esempio se ignora i "valori errati", o quale simbolo
+usare in un grafico.  Tuttavia, se volete qualcosa di specifico, potete specificare un valore
+di vostra scelta che sarà usato al posto di quello predefinito.
+
+Proviamo una funzione che può prendere più argomenti: `round()`.
+
+```{r, results = 'show', purl = FALSE}
+round(3.14159)
+```
+
+Qui abbiamo chiamato `round()` con un solo argomento, `3.14159`, e ha
+restituito il valore `3`. Questo perché il default è di arrotondare al più vicino
+numero intero più vicino. Se vogliamo più cifre possiamo vedere come fare ottenendo
+informazioni sulla funzione `round`. Possiamo usare `args(round)` per trovare quali 
+argomenti che prende, o guardare l' aiuto per questa funzione usando `?round`.
+
+```{r, results = 'show', purl = FALSE}
+args(round)
+```
+
+```{r, eval = FALSE, purl = FALSE}
+?round
+```
+
+Vediamo che se vogliamo un numero diverso di cifre, 
+possiamo digitare "cifre = 2" o quante ne vogliamo.
+
+```{r, results = 'show', purl = FALSE}
+round(3.14159, digits = 2)
+```
+
+Se fornite gli argomenti nell'esatto ordine in cui sono definiti,
+non è necessario nominarli:
+
+```{r, results = 'show', purl = TRUE}
+round(3.14159, 2)
+```
+
+E se nominate gli argomenti, potete cambiare il loro ordine:
+
+```{r, results = 'show', purl = FALSE}
+round(digits = 2, x = 3.14159)
+```
+
+È buona pratica mettere gli argomenti non opzionali (come il numero che state
+arrotondare) prima nella vostra chiamata di funzione, e poi specificare i nomi di tutti gli argomenti opzionali
+opzionali. Se non lo fate, qualcuno che legge il vostro codice potrebbe dover cercare la
+definizione di una funzione con argomenti non familiari per capire cosa state
+facendo.
+
+
+## Vettori e tipologie di dati
+
+```{r, echo = FALSE, purl = TRUE}
+### Vectors and data types
+```
+
+Un vettore è il tipo di dati più comune e basilare in R, ed è praticamente
+il cavallo di battaglia di R. Un vettore è composto da una serie di valori, che possono essere
+sia numeri che caratteri. Possiamo assegnare una serie di valori ad un vettore usando
+la funzione `c()`. Per esempio, possiamo creare un vettore di pesi di animali e assegnarlo
+ad un nuovo oggetto `peso_g`:
+
+```{r, purl = FALSE}
+peso_g <- c(50, 60, 65, 82)
+peso_g
+```
+
+Un vettore può anche contenere dei caratteri:
+
+```{r, purl = FALSE}
+animali <- c("cane", "topo", "gatto")
+animali
+```
+
+Le virgolette intorno a "topo", "gatto", ecc. sono essenziali qui. Senza le virgolette R
+assumerà che siano stati creati oggetti chiamati `cane`, `topo` e `gatto`. Poiché questi oggetti
+non esistono nella memoria di R, ci sarà un messaggio di errore.
+
+Ci sono molte funzioni che vi permettono di ispezionare il contenuto di un
+vettore. La funzione `length()` vi dice quanti elementi ci sono in un particolare vettore:
+
+```{r, purl = FALSE}
+length(peso_g)
+length(animali)
+```
+
+Una caratteristica importante di un vettore è che tutti gli elementi sono lo stesso tipo di dati.
+La funzione `class()` indica con quale tipo di oggetto state lavorando:
+
+```{r, purl = FALSE}
+class(peso_g)
+class(animali)
+```
+
+La funzione `str()` fornisce una panoramica della struttura di un oggetto e dei suoi
+elementi. È una funzione utile quando si lavora con oggetti grandi e complessi:
+
+```{r, purl = FALSE}
+str(peso_g)
+str(animali)
+```
+
+Potete usare la funzione `c()` per aggiungere altri elementi al vostro vettore:
+```{r, purl = FALSE}
+peso_g <- c(peso_g, 90) # aggiunge alla fine del vettore
+peso_g <- c(30, peso_g) # aggiunge all'inizio del vettore
+peso_g
+```
+
+Nella prima linea, prendiamo il vettore originale `peso_g`,
+aggiungiamo il valore `90` alla fine di esso, e salviamo il risultato in
+`peso_g`. Poi aggiungiamo il valore `30` all'inizio, salvando nuovamente il risultato
+di nuovo in `peso_g`.
+
+Possiamo fare questo più e più volte per far crescere un vettore o assemblare un set di dati.
+Mentre programmiamo, questo può essere utile per aggiungere risultati che stiamo raccogliendo o
+calcolando.
+
+Un **vettore atomico** è il più semplice **tipo di dati** di R ed è un vettore lineare di un singolo tipo. Sopra, abbiamo visto 
+2 dei 6 principali tipi di **vettore atomico** che R
+utilizza: `"character"` e `"numeric"` (o `"double"`). Questi sono i mattoni di base che
+tutti gli oggetti R sono costruiti a partire da questi. Gli altri 4 tipi di **vettori atomici** sono:
+
+* `"logical"`per `TRUE` e `FALSE` (il tipo di dati booleani)
+* `"integer"` per i numeri interi (ad esempio, `2L`, la `L` indica a R che è un intero)
+* `"complex"` per rappresentare numeri complessi con parti reali e immaginarie (es,
+  `1 + 4i`) e questo è tutto quello che diremo su di loro
+* `"raw"` per flussi di bit che non discuteremo ulteriormente
+
+Potete controllare il tipo del vostro vettore usando la funzione `typeof()` e inserendo il vostro vettore come argomento.
+
+I vettori sono una delle molte **strutture di dati** che R usa. Altre importanti
+sono liste (`list`), matrici (`matrix`), data frame (`data.frame`),
+fattori (`factor`) e array (`array`).
+
+> ### Sfida
+>
+>
+> * Abbiamo visto che i vettori atomici possono essere di tipo
+> numerico (o doppio), intero e logico. Ma cosa succede se proviamo a mischiare questi tipi in
+> un singolo vettore?
+> 
+> ```{text_answer, echo=FALSE, purl=FALSE}
+> R li converte implicitamente in modo che siano tutti dello stesso tipo
+> ```
+>
+> * Cosa succederà in ognuno di questi esempi? (suggerimento: usate `class()`
+> per controllare il tipo di dati dei tuoi oggetti):
+>
+> ```r
+> num_char <- c(1, 2, 3, "a")
+> num_logico <- c(1, 2, 3, TRUE)
+> char_logical <- c("a", "b", "c", TRUE)
+> tricky <- c(1, 2, 3, "4")
+> ```
+>
+> * Perché pensi che succeda?
+>
+> ```{risposta_testo, echo=FALSE, purl=FALSE}
+> I vettori possono essere di un solo tipo di dati. R cerca di
+> convertire (forzare) il contenuto di questo vettore per trovare un "denominatore comune
+> denominatore" che non perda nessuna informazione.
+> ```
+>
+> * Quanti valori in `combined_logical` sono `"TRUE"` (come carattere) nel
+> seguente esempio (riutilizzando i 2 `..._logical` di cui sopra):
+>
+> ```r
+> combined_logical <- c(num_logical, char_logical)
+> ```
+>
+> ```{risposta_testo, echo=FALSE, purl=FALSE}
+> Solo uno. Non c'è memoria dei tipi di dati passati, e la coercizione avviene la
+> prima volta che il vettore viene valutato. Pertanto, il `TRUE` in `num_logical`
+> viene convertito in un `1` prima che venga convertito in `"1"` in
+> `combined_logical`.
+> ```
+>
+> Probabilmente avrete notato che gli oggetti di tipo diverso vengono
+> convertiti in un singolo tipo condiviso all'interno di un vettore. In R, noi
+> chiamiamo la conversione di oggetti da una classe in un'altra classe
+> _coercizione_. Queste conversioni avvengono secondo una gerarchia,
+> per cui alcuni tipi vengono preferibilmente coerciti in altri
+> tipi. Puoi disegnare un diagramma che rappresenti la gerarchia di come
+> questi tipi di dati sono forzati?
+>
+> ```{text_answer, echo=FALSE, purl=FALSE}
+> logical &#8594; numeric &#8594; character &#8592; logical
+> ```
+
