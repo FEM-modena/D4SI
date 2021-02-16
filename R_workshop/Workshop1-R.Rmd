@@ -1,11 +1,10 @@
 ---
-title: "Introduction to R"
+title: "Primi passi di programmazione con R"
 author: "Lorenzo Andreoli & Data Carpentry contributors"
-minutes: 45
+minutes: 60
 ---
-
 ```{r, echo = FALSE, purl = FALSE, message = FALSE}
-
+source("setup.R")
 ```
 
 ## Creare oggetti in R
@@ -22,39 +21,28 @@ Si può ottenere l'output di R semplicemente digitando la matematica nella conso
 ```
 
 Tuttavia, per fare cose utili e interessanti, abbiamo bisogno di assegnare _valori_ a
-_oggetti_. Per creare un oggetto, dobbiamo dargli un nome seguito dall'operatore di assegnazione
-operatore di assegnazione `<-`, e il valore che vogliamo dargli:
+_oggetti_. Per creare un oggetto, dobbiamo dargli un nome seguito dall'operatore di assegnazione operatore di assegnazione `<-`, e il valore che vogliamo dargli:
 
 ```{r, purl = FALSE}
 weight_kg <- 55
 ```
 
-`<-` è l'operatore di assegnazione. Assegna valori sulla destra a oggetti sulla
-sinistra. Così, dopo aver eseguito `x <- 3`, il valore di `x` è `3`. La freccia sembra anche una bocca (con la lingua), il che la rende facile da pronunciare come `x` **mangia** 3. Per ragioni storiche, puoi anche usare `=`
-per le assegnazioni, ma non in ogni contesto. A causa del
-[lieve](https://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html)
-[differenze](https://r.789695.n4.nabble.com/Is-there-any-difference-between-and-tp878594p878598.html)
-nella sintassi, è buona pratica usare sempre `<-` per le assegnazioni. 
+`<-` è l'operatore di assegnazione. Assegna valori sulla destra a oggetti sulla sinistra. Così, dopo aver eseguito `x <- 3`, il valore di `x` è `3`. La freccia sembra anche una bocca (con la lingua), il che la rende facile da pronunciare come `x` **mangia** 3. Per ragioni storiche, puoi anche usare `=` per le assegnazioni, ma non in ogni contesto. A causa del [lieve](https://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html) [differenze](https://r.789695.n4.nabble.com/Is-there-any-difference-between-and-tp878594p878598.html) nella sintassi, è buona pratica usare sempre `<-` per le assegnazioni. 
 
-In RStudio, digitando <kbd>Alt</kbd> + <kbd>-</kbd> (premendo <kbd>Alt</kbd> allo
-contemporaneamente al tasto <kbd>-</kbd>) scriverà ` <- ` in un singolo colpo di tasto in un PC, mentre digitando <kbd>Option</kbd> + <kbd>-</kbd> (premere <kbd>Option</kbd> allo
-contemporaneamente al tasto <kbd>-</kbd>) fa lo stesso in un Mac.
+In RStudio, digitando <kbd>Alt</kbd> + <kbd>-</kbd> (premendo <kbd>Alt</kbd> allo contemporaneamente al tasto <kbd>-</kbd>) scriverà ` <- ` in un singolo colpo di tasto in un PC, mentre digitando <kbd>Option</kbd> + <kbd>-</kbd> (premere <kbd>Option</kbd> allo contemporaneamente al tasto <kbd>-</kbd>) fa lo stesso in un Mac.
 
 Agli oggetti può essere dato quasi qualsiasi nome come `x`, `temperatura_corrente`, o `subject_id`. Ecco alcune ulteriori linee guida sulla denominazione degli oggetti:
 
 * Vuoi che i nomi dei tuoi oggetti siano espliciti e non troppo lunghi.
 * Non possono iniziare con un numero (`2x` non è valido, ma `x2` sì).
-* R è sensibile alle maiuscole e alle minuscole, quindi, per esempio, `weight_kg` è diverso da `Weight_kg`.
-* Ci sono alcuni nomi che non possono essere usati perché sono i nomi di funzioni fondamentali in R (per esempio, `if`, `else`, `for`, vedi
-[qui](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html)
+* R è sensibile alle maiuscole e alle minuscole, quindi, per esempio, `peso_kg` è diverso da `Peso_kg`.
+* Ci sono alcuni nomi che non possono essere usati perché sono i nomi di funzioni fondamentali in R (per esempio, `if`, `else`, `for`, vedi [qui](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html)
 per una lista completa). In generale, anche se è permesso, è meglio non usare
-altri nomi di funzioni (ad esempio, `c`, `T`, `mean`, `data`, `df`, `weights`). Se sei in
-dubbio, controlla l'aiuto per vedere se il nome è già in uso. 
+altri nomi di funzioni (ad esempio, `c`, `T`, `mean`, `data`, `df`, `weights`). Se sei in dubbio, controlla l'aiuto per vedere se il nome è già in uso. 
 * È meglio evitare i punti (`.`) all'interno dei nomi. Molti nomi di funzioni in R stesso li hanno e i punti hanno anche un significato speciale (metodi) in R e in altri linguaggi di programmazione. Per evitare confusione, non includere punti nei nomi.
 * Si raccomanda di usare nomi per i nomi degli oggetti e verbi per i nomi delle funzioni.
 * Siate coerenti nello stile del vostro codice, come ad esempio dove mettete gli spazi, come nominate gli oggetti, ecc. Usare uno stile di codifica coerente rende il tuo codice più chiaro da leggere per il tuo futuro e per i tuoi collaboratori. In R, tre popolari guide di stile vengono da [Google](https://google.github.io/styleguide/Rguide.xml), [Jean
-Fan](https://jef.works/R-style-guide/) e da
-tidyverse](https://style.tidyverse.org/). Lo stile tidyverse è molto completo e può sembrare travolgente all'inizio. Puoi installare il pacchetto [**`lintr`**](https://github.com/jimhester/lintr) per controllare automaticamente i problemi nello stile del tuo codice.
+Fan](https://jef.works/R-style-guide/) e da [tidyverse](https://style.tidyverse.org/). Lo stile tidyverse è molto completo e può sembrare travolgente all'inizio. Puoi installare il pacchetto [**`lintr`**](https://github.com/jimhester/lintr) per controllare automaticamente i problemi nello stile del tuo codice.
 
 
 > ### Oggetti vs. variabili
@@ -73,8 +61,7 @@ peso_kg <- 55    # non stampa nulla
 peso_kg          # e lo stesso vale per la digitazione del nome dell'oggetto
 ```
 
-Ora che R ha `peso_kg` in memoria, possiamo fare aritmetica con esso. Per
-esempio, potremmo voler convertire questo peso in libbre (il peso in libbre è 2,2 volte il peso in kg):
+Ora che R ha `peso_kg` in memoria, possiamo fare aritmetica con esso. Per esempio, potremmo voler convertire questo peso in libbre (il peso in libbre è 2,2 volte il peso in kg):
 
 ```{r, purl = FALSE}
 2.2 * peso_kg
@@ -87,9 +74,7 @@ peso_kg <- 70.5
 2.2 * peso_kg
 ```
 
-Questo significa che assegnare un valore ad un oggetto non cambia i valori di
-altri oggetti. Per esempio, memorizziamo il peso dell'animale in libbre in un nuovo
-oggetto, `peso_lb`:
+Questo significa che assegnare un valore ad un oggetto non cambia i valori di altri oggetti. Per esempio, memorizziamo il peso dell'animale in libbre in un nuovo oggetto, `peso_lb`:
 
 ```{r, purl = FALSE}
 weight_lb <- 2.2 * weight_kg
@@ -105,15 +90,8 @@ Quale pensate sia il contenuto attuale dell'oggetto `peso_lb`? 126,5 o 220?
 
 ### Salva il tuo codice
 
-Fino ad ora, il vostro codice è stato nella console. Questo è utile per rapide interrogazioni
-ma non così utile se si vuole rivedere il proprio lavoro per qualsiasi motivo.
-Uno script può essere aperto premendo <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + 
-<kbd>N</kbd>. 
-È saggio salvare immediatamente il file dello script. Per fare questo premere 
-<kbd>Ctrl</kbd> + <kbd>S</kbd>. Questo aprirà una finestra di dialogo dove 
-puoi decidere dove salvare il tuo file di script e come chiamarlo.
-L'estensione del file `.R` viene aggiunta automaticamente e assicura che il tuo file
-si aprirà con RStudio.
+Fino ad ora, il vostro codice è stato nella console. Questo è utile per rapide interrogazioni ma non così utile se si vuole rivedere il proprio lavoro per qualsiasi motivo. Uno script può essere aperto premendo <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd>. 
+È saggio salvare immediatamente il file dello script. Per fare questo premere <kbd>Ctrl</kbd> + <kbd>S</kbd>. Questo aprirà una finestra di dialogo dove  puoi decidere dove salvare il tuo file di script e come chiamarlo. L'estensione del file `.R` viene aggiunta automaticamente e assicura che il tuo file si aprirà con RStudio.
 
 Non dimenticate di salvare periodicamente il vostro lavoro premendo <kbd>Ctrl</kbd> + 
 <kbd>S</kbd>.
@@ -122,8 +100,7 @@ Non dimenticate di salvare periodicamente il vostro lavoro premendo <kbd>Ctrl</k
 ### Commenti
 
 Il carattere di commento in R è `#`, qualsiasi cosa a destra di un `#` in uno script
-sarà ignorato da R. È utile lasciare note e spiegazioni nei vostri
-script.
+sarà ignorato da R. È utile lasciare note e spiegazioni nei vostri script.
 RStudio rende facile commentare o scommentare un paragrafo: dopo aver selezionato le
 righe che volete commentare, premete contemporaneamente sulla vostra tastiera
 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>. Se volete commentare solo
@@ -140,19 +117,19 @@ selezionare l'intera linea), quindi premere <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
 > età <- 122 # età?
 > massa <- massa * 2.0 # massa?
 > età <- età - 20 # età?
-> mass_index <- massa/età # mass_index?
+> massa_index <- massa/età # mass_index?
 > ```
 
-```{r, echo = FALSE, purl = TRUE}
+```{r, echo = FALSE, purl = FALSE}
 ### Challenge
 ##
 ## What are the values after each statement in the following?
 ##
-## mass <- 47.5            # mass?
-## age  <- 122             # age?
-## mass <- mass * 2.0      # mass?
-## age  <- age - 20        # age?
-## mass_index <- mass/age  # mass_index?
+## massa <- 47.5            # massa?
+## età  <- 122             # età?
+## massa <- massa * 2.0      # massa?
+## età  <- età - 20        # età?
+## massa_index <- massa/età  # massa_index?
 ```
 
 ### Funzioni e loro argomenti
@@ -207,15 +184,13 @@ args(round)
 ?round
 ```
 
-Vediamo che se vogliamo un numero diverso di cifre, 
-possiamo digitare "cifre = 2" o quante ne vogliamo.
+Vediamo che se vogliamo un numero diverso di cifre, possiamo digitare "cifre = 2" o quante ne vogliamo.
 
 ```{r, results = 'show', purl = FALSE}
 round(3.14159, digits = 2)
 ```
 
-Se fornite gli argomenti nell'esatto ordine in cui sono definiti,
-non è necessario nominarli:
+Se fornite gli argomenti nell'esatto ordine in cui sono definiti, non è necessario nominarli:
 
 ```{r, results = 'show', purl = TRUE}
 round(3.14159, 2)
@@ -228,11 +203,8 @@ round(digits = 2, x = 3.14159)
 ```
 
 È buona pratica mettere gli argomenti non opzionali (come il numero che state
-arrotondare) prima nella vostra chiamata di funzione, e poi specificare i nomi di tutti gli argomenti opzionali
-opzionali. Se non lo fate, qualcuno che legge il vostro codice potrebbe dover cercare la
-definizione di una funzione con argomenti non familiari per capire cosa state
-facendo.
-
+arrotondare) prima nella vostra chiamata di funzione, e poi specificare i nomi di tutti gli argomenti opzionali. Se non lo fate, qualcuno che legge il vostro codice potrebbe dover cercare la
+definizione di una funzione con argomenti non familiari per capire cosa state facendo.
 
 ## Vettori e tipologie di dati
 
@@ -240,11 +212,7 @@ facendo.
 ### Vectors and data types
 ```
 
-Un vettore è il tipo di dati più comune e basilare in R, ed è praticamente
-il cavallo di battaglia di R. Un vettore è composto da una serie di valori, che possono essere
-sia numeri che caratteri. Possiamo assegnare una serie di valori ad un vettore usando
-la funzione `c()`. Per esempio, possiamo creare un vettore di pesi di animali e assegnarlo
-ad un nuovo oggetto `peso_g`:
+Un vettore è il tipo di dati più comune e basilare in R, ed è praticamente il cavallo di battaglia di R. Un vettore è composto da una serie di valori, che possono essere sia numeri che caratteri. Possiamo assegnare una serie di valori ad un vettore usando la funzione `c()`. Per esempio, possiamo creare un vettore di pesi di animali e assegnarlo ad un nuovo oggetto `peso_g`:
 
 ```{r, purl = FALSE}
 peso_g <- c(50, 60, 65, 82)
@@ -262,8 +230,7 @@ Le virgolette intorno a "topo", "gatto", ecc. sono essenziali qui. Senza le virg
 assumerà che siano stati creati oggetti chiamati `cane`, `topo` e `gatto`. Poiché questi oggetti
 non esistono nella memoria di R, ci sarà un messaggio di errore.
 
-Ci sono molte funzioni che vi permettono di ispezionare il contenuto di un
-vettore. La funzione `length()` vi dice quanti elementi ci sono in un particolare vettore:
+Ci sono molte funzioni che vi permettono di ispezionare il contenuto di un vettore. La funzione `length()` vi dice quanti elementi ci sono in un particolare vettore:
 
 ```{r, purl = FALSE}
 length(peso_g)
@@ -299,8 +266,7 @@ aggiungiamo il valore `90` alla fine di esso, e salviamo il risultato in
 di nuovo in `peso_g`.
 
 Possiamo fare questo più e più volte per far crescere un vettore o assemblare un set di dati.
-Mentre programmiamo, questo può essere utile per aggiungere risultati che stiamo raccogliendo o
-calcolando.
+Mentre programmiamo, questo può essere utile per aggiungere risultati che stiamo raccogliendo o calcolando.
 
 Un **vettore atomico** è il più semplice **tipo di dati** di R ed è un vettore lineare di un singolo tipo. Sopra, abbiamo visto 
 2 dei 6 principali tipi di **vettore atomico** che R
@@ -318,6 +284,7 @@ Potete controllare il tipo del vostro vettore usando la funzione `typeof()` e in
 I vettori sono una delle molte **strutture di dati** che R usa. Altre importanti
 sono liste (`list`), matrici (`matrix`), data frame (`data.frame`),
 fattori (`factor`) e array (`array`).
+
 
 > ### Sfida
 >
@@ -342,7 +309,7 @@ fattori (`factor`) e array (`array`).
 >
 > * Perché pensi che succeda?
 >
-> ```{risposta_testo, echo=FALSE, purl=FALSE}
+> ```{text_answer, echo=FALSE, purl=FALSE, hide= TRUE}
 > I vettori possono essere di un solo tipo di dati. R cerca di
 > convertire (forzare) il contenuto di questo vettore per trovare un "denominatore comune
 > denominatore" che non perda nessuna informazione.
@@ -355,7 +322,7 @@ fattori (`factor`) e array (`array`).
 > combined_logical <- c(num_logical, char_logical)
 > ```
 >
-> ```{risposta_testo, echo=FALSE, purl=FALSE}
+> ```{text_answer, echo=FALSE, purl=FALSE}
 > Solo uno. Non c'è memoria dei tipi di dati passati, e la coercizione avviene la
 > prima volta che il vettore viene valutato. Pertanto, il `TRUE` in `num_logical`
 > viene convertito in un `1` prima che venga convertito in `"1"` in
@@ -374,3 +341,137 @@ fattori (`factor`) e array (`array`).
 > logical &#8594; numeric &#8594; character &#8592; logical
 > ```
 
+
+```{r, echo = FALSE, eval = FALSE, purl = TRUE}
+## Abbiamo visto che i vettori atomici possono essere di tipo carattere, numerico, intero e
+## logico. Ma cosa succede se proviamo a mischiare questi tipi in un singolo
+## vettore?
+## Cosa succederà in ognuno di questi esempi? (suggerimento: usate `class()` per
+## controllare il tipo di dati del vostro oggetto)
+num_char <- c(1, 2, 3, "a")
+num_logico <- c(1, 2, 3, TRUE)
+char_logical <- c("a", "b", "c", TRUE)
+difficile <- c(1, 2, 3, "4")
+
+## Perché pensi che succeda?
+## Quanti valori in `combined_logical` sono `"TRUE"` (come carattere) nel
+## seguente esempio:
+
+combined_logical <- c(num_logical, char_logical)
+## Avrai probabilmente notato che gli oggetti di tipo diverso vengono
+## convertiti in un singolo tipo condiviso all'interno di un vettore. In R, chiamiamo
+## conversione di oggetti da una classe in un'altra classe
+## _coercizione_. Queste conversioni avvengono secondo una gerarchia,
+## per cui alcuni tipi vengono preferibilmente coerciti in altri tipi. Può
+## disegnare un diagramma che rappresenti la gerarchia di come questi dati
+## questi tipi di dati sono forzati?
+```
+
+## Sottoscrizione di vettori
+
+Se vogliamo estrarre uno o più valori da un vettore, dobbiamo fornire uno
+o più indici tra parentesi quadre. Per esempio:
+
+```{r, results = 'show', purl = FALSE}
+animali <- c("topo", "ratto", "cane", "gatto")
+animali[2]
+animali[c(3, 2)]
+```
+
+Possiamo anche ripetere gli indici per creare un oggetto con più elementi di quello
+originale:
+
+```{r, results = 'show', purl = FALSE}
+più_animali <- animali[c(1, 2, 3, 2, 1, 4)]
+più_animali
+```
+
+Gli indici di R partono da 1. I linguaggi di programmazione come Fortran, MATLAB, Julia e R iniziano
+contare da 1, perché questo è ciò che gli esseri umani tipicamente fanno. I linguaggi della famiglia C (inclusi C++, Java, Perl e Python) contano da 0 perché è più semplice da fare per i computer.
+
+### Sottoinsiemi condizionali
+
+Un altro modo comune di suddividere è usando un vettore logico. `TRUE` selezionerà
+selezionerà l'elemento con lo stesso indice, mentre `FALSE` non lo farà:
+
+```{r, results = 'show', purl = FALSE}
+peso_g <- c(21, 34, 39, 54, 55)
+peso_g[c(TRUE, FALSE, FALSE, TRUE, TRUE)]
+```
+
+Tipicamente, questi vettori logici non sono digitati a mano, ma sono l'output di
+altre funzioni o test logici. Per esempio, se volete selezionare solo i valori
+valori superiori a 50:
+
+```{r, results = 'show', purl = FALSE}
+peso_g > 50 # restituirà logiche con TRUE per gli indici che soddisfano la condizione
+## quindi possiamo usarlo per selezionare solo i valori superiori a 50
+peso_g[peso_g > 50]
+```
+
+Puoi combinare più test usando `&` (entrambe le condizioni sono vere, AND) o `|`
+(almeno una delle condizioni è vera, OR):
+
+```{r, results = 'show', purl = FALSE}
+peso_g[peso_g > 30 & peso_g < 50]
+peso_g[peso_g <= 30 | peso_g == 55]
+peso_g[peso_g >= 30 & peso_g == 21]
+```
+
+Qui, `>` per "maggiore di", `<` sta per "minore di", `<=` per "minore di
+o uguale a", e `==` per "uguale a". Il doppio segno di uguale `==` è un test per
+l'uguaglianza numerica tra i lati sinistro e destro, e non dovrebbe essere
+confuso con il singolo segno `=`, che esegue l'assegnazione di una variabile (simile
+a `<-`).
+
+Un compito comune è quello di cercare determinate stringhe in un vettore.  Si potrebbe usare l'operatore operatore "or" `|` per verificare l'uguaglianza con più valori, ma questo può rapidamente
+diventare noioso. La funzione `%in%` permette di verificare se uno qualsiasi degli elementi di
+un vettore di ricerca sono trovati:
+
+```{r, results = 'show', purl = FALSE}
+animali <- c("topo", "ratto", "cane", "gatto", "gatto")
+# restituisce sia ratto che gatto
+animali[animali == "gatto" | animali == "ratto"] 
+# restituisce un vettore logico che è TRUE per gli elementi all'interno di animals
+# che si trovano nel vettore di caratteri e FALSE per quelli che non lo sono
+animali %in% c("ratto", "gatto", "cane", "anatra", "capra") 
+# usa il vettore logico creato da %in% per restituire gli elementi degli animali 
+# che si trovano nel vettore di caratteri
+animali[animali %in% c("ratto", "gatto", "cane", "anatra", "capra")]
+```
+
+## Dati mancanti
+
+Poiché R è stato progettato per analizzare serie di dati, include il concetto di dati mancanti
+(cosa non comune in altri linguaggi di programmazione). I dati mancanti sono rappresentati
+nei vettori come `NA`.
+
+Quando si fanno operazioni sui numeri, la maggior parte delle funzioni restituisce `NA` se i dati
+con cui stai lavorando includono valori mancanti. Questa caratteristica
+rende più difficile trascurare i casi in cui si ha a che fare con dati mancanti.
+Potete aggiungere l'argomento `na.rm = TRUE` per calcolare il risultato come se i valori mancanti
+valori mancanti fossero stati rimossi (`rm` sta per ReMoved) prima.
+
+```{r, purl = FALSE}
+altezze <- c(2, 4, 4, NA, 6)
+mean(altezze)
+max(altezze)
+mean(altezze, na.rm = TRUE)
+max(altezze, na.rm = TRUE)
+```
+
+Se i vostri dati includono valori mancanti, potreste voler familiarizzare con le funzioni
+funzioni `is.na()`, `na.omit()`, e `complete.cases()`. Vedi sotto per
+esempi.
+
+```{r, purl = FALSE}
+## Estrarre gli elementi che non sono valori mancanti.
+altezze[!is.na(altezze)]
+## Restituisce l'oggetto con i casi incompleti rimossi. 
+#L'oggetto restituito è un vettore atomico di tipo `"numeric"` (o #`"double"`).
+na.omit(altezze)
+## Estrae gli elementi che sono casi completi. 
+#L'oggetto restituito è un vettore atomico di tipo `"numerico"` (o #`"doppio"`).
+altezze[complete.cases(altezze)]
+```
+Ricordate che potete usare la funzione `typeof()` per trovare il tipo del vostro vettore atomico. 
