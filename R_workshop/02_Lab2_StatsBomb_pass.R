@@ -1,5 +1,6 @@
 # carichiamo i pacchetti necessari
 install.packages("devtools")
+library(devtools)
 devtools::install_github("statsbomb/StatsBombR", force = TRUE)
 devtools::install_github("FCrSTATS/SBpitch")
 
