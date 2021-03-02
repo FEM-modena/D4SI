@@ -1,0 +1,170 @@
+---
+title: "Transform Data"
+---
+
+```{r setup}
+library(tidyverse)
+
+# Toy datasets to use
+pollution <- tribble(
+       ~city,   ~size, ~amount, 
+  "New York", "large",      23,
+  "New York", "small",      14,
+    "London", "large",      22,
+    "London", "small",      16,
+   "Beijing", "large",      121,
+   "Beijing", "small",      56
+)
+# library(babynames)
+```
+
+# Import Data
+
+## Your Turn 1
+
+Imposta la directory di lavoro sulla cartella dedicata. Poi importa l'insieme di dati `babynames.csv` come `babynames`. Poi copia il codice di importazione nel pezzo di codice qui sotto. Funziona?
+
+
+```{r}
+```
+
+```{r}
+babynames
+```
+
+# dplyr
+
+## Your Turn 2
+
+Modificate il codice per selezionare solo la colonna `n`:
+
+```{r}
+select(babynames, name, prop)
+```
+
+## Quiz
+
+Quale di questi NON è un modo per selezionare le colonne `nome` e `n` insieme?
+
+```{r}
+select(babynames, -c(year, sex, prop))
+select(babynames, name:n)
+select(babynames, starts_with("n"))
+select(babynames, ends_with("n"))
+```
+
+## Your Turn 3
+
+Usa `filtro`, `babynames` e gli operatori logici per trovare:
+
+* Tutti i nomi in cui prop è maggiore o uguale a 0,08  
+* Tutti i bambini che si chiamano "Sea".   
+
+```{r}
+```
+
+## Your Turn 4
+
+Usa gli operatori booleani per restituire solo le righe che contengono:
+
+* Bambini (M) di nome Sue  
+* Nomi che sono stati usati esattamente da 5 o 6 bambini nel 1880  
+* Nomi che sono uno tra Acura, Lexus, o Yugo
+
+```{r}
+```
+
+## Help Me
+
+Qual è il più piccolo valore di n?
+Qual è il più grande?
+
+```{r}
+```
+
+## Your Turn 5
+
+Usate `%>%` per scrivere una sequenza di funzioni che: 
+
+1. Filtra i nomi dei bambini solo per le ragazze nate nel 2017, *allora...*  
+2. Seleziona le colonne `nome` e `n`, *allora...*  
+3. Organizza i risultati in modo che i nomi più popolari siano in cima.
+
+```{r}
+```
+
+## Your Turn 6 - Exam
+
+Ritagliare babynames alle sole righe che contengono il nome “Beyonce” e il sesso F
+Seleziona il risultato alle sole colonne che appariranno nel tuo grafico (non strettamente necessario, ma pratica utile)
+Traccia i risultati come un grafico a linee con l'anno sull'asse x e prop sull'asse y
+
+```{r}
+```
+
+## Your Turn 7
+
+Completate il codice per estrarre le righe dove nome == "Khaleesi". Poi usate summarise() e sum() e min() per trovare:
+1. Il numero totale di bambini chiamati Khaleesi
+2. Il primo anno in cui Khaleesi è apparsa nei dati
+
+*(Hint: Be sure to remove each `_` before running the code)*
+
+```{r}
+babynames ___ 
+  filter(_______________________) ___
+  ___________(total = ________, first = _______)
+```
+
+## Your Turn 8
+
+Completate il codice con group_by(), summarise() e arrange() per visualizzare le dieci combinazioni di nome e sesso più popolari. Calcolare la popolarità come il numero totale di bambini con un dato nome e sesso.
+
+*(Hint: Be sure to remove each `_` before running the code)*
+
+```{r}
+babynames %>%
+  _______(name, sex) %>% 
+  _______(total = _____(n)) %>% 
+  _______(desc(_____))
+```
+
+## Your Turn 9
+
+Usa group_by() per calcolare il numero totale di bambini nati per ogni anno. 
+Traccia i risultati come un grafico a linee: totale vs. anno.
+
+```{r}
+```
+
+## Your Turn 10
+
+Usare mutate() e min_rank() per classificare ogni riga in babynames dal più grande n al più basso n.
+
+*(Hint: Be sure to remove each `_` before running the code)*
+
+```{r}
+babynames %>% 
+  ______(rank = _______(____(prop)))
+```
+
+## Your Turn 11
+
+Raggruppa i nomi di bambini per anno e poi classifica nuovamente i dati. Filtrate i risultati alle sole righe in cui rank == 1.
+
+```{r}
+```
+
+***
+
+# Take aways
+
+* Extract variables with `select()`  
+* Extract cases with `filter()`  
+* Arrange cases, with `arrange()`  
+
+* Make tables of summaries with `summarise()`  
+* Make new variables, with `mutate()`  
+* Do groupwise operations with `group_by()`
+
+* Connect operations with `%>%`  
