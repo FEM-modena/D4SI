@@ -1,0 +1,111 @@
+---
+title: "Data Types"
+output: html_notebook
+---
+
+```{r setup}
+library(tidyverse)
+library(babynames)
+library(nycflights13)
+library(stringr)
+library(forcats)
+library(lubridate)
+library(hms)
+```
+
+## Your Turn 1
+
+Usa flights per creare delayed, una variabile che mostra se un volo era in ritardo (arr_delay > 0). 
+Poi, rimuovi tutte le righe che contengono un NA in delayed. 
+
+Infine, crea una tabella riassuntiva che mostra:
+1.Quanti voli sono stati ritardati
+2.Quale proporzione di voli è stata ritardata
+
+```{r}
+
+```
+
+
+## Your Turn 2
+
+
+1. Isolate l'ultima lettera di ogni nome (usate mutate)
+2. e creare una variabile logica (chiamatela vocali) che mostri se l'ultima lettera è una tra "a", "e", "i", "o", "u", o "y". 
+3. Usate una media ponderata per calcolare la proporzione di bambini il cui nome finisce in una vocale (per anno e sesso) 
+4.e poi mostra i risultati come un grafico a linee.
+
+```{r}
+babynames %>%
+  _______(last %in% _________, 
+          vowel = __________) %>%
+  group_by(__________) %>%
+  _________(p_vowel = weighted.mean(vowel, n)) %>%
+  _________ +
+  __________
+```
+
+## Your Turn 3
+
+Ripeti l'esercizio precedente, alcuni dei cui codici sono nel tuo quaderno, per fare un grafico sensato del consumo medio di TV per stato civile.
+
+```{r}
+gss_cat %>%
+  drop_na(________) %>%
+  group_by(________) %>%
+  summarise(_________________) %>%
+  ggplot() +
+    geom_point(mapping = aes(x = _______, y = _________________________))
+```
+
+## Your Turn 4
+
+Pensi che i liberali o i conservatori guardino più TV?
+Calcolate le ore medie di televisione per partito di appartenenza e poi tracciate i risultati.
+
+```{r}
+
+```
+
+## Your Turn 5
+
+Qual è la migliore ora del giorno per volare?
+
+Usa `hour` e `minute` in `flights` tper calcolare l'ora del giorno per ogni volo come hms.. Poi usa smooth line per tracciare la relazione tra l'ora del giorno e arr_delay.
+
+```{r}
+
+```
+
+## Your Turn 6
+
+Riempite gli spazi vuoti per:
+
+Estrarre il giorno della settimana di ogni volo (come nome completo) da time_hour. 
+
+Calcolare la media di arr_delay per giorno della settimana.
+
+Tracciare i risultati come grafico a colonne (grafico a barre) con geom_col().
+```{r}
+flights %>% 
+  mutate(weekday = _______________________________) %>% 
+  __________________ %>% 
+  drop_na(arr_delay) %>% 
+  summarise(avg_delay = _______________) %>% 
+  ggplot() +
+    ___________(mapping = aes(x = weekday, y = avg_delay))
+```
+
+***
+
+# Take Aways
+
+Dplyr gives you three _general_ functions for manipulating data: `mutate()`, `summarise()`, and `group_by()`. Augment these with functions from the packages below, which focus on specific types of data.
+
+Package   | Data Type
+--------- | --------
+stringr   | strings
+forcats   | factors
+hms       | times
+lubridate | dates and times
+
