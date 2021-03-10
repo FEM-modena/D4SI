@@ -1,0 +1,206 @@
+---
+title: "03_TextAnalysisR"
+author: "Lorenzo Andreoli"
+output: html_document
+---
+1. Dopo aver scaricato il file.txt della chat di whatsapp e aver settato il corretto
+working directory, procediamo con l'analisi. Per prima cosa installiamo (se necessario)
+e carichiamo i pacchetti necessari.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+install.packages("rwhatsapp")
+library(rwhatsapp)
+library(tidyverse)
+library(lubridate)
+library("tidyr")
+library("dplyr")
+library("ggplot2"); #theme_set(theme_minimal())
+library("tidytext")
+library("stopwords")
+
+# carichiamo un dataset di esempio
+history <- system.file("extdata", "sample.txt", package = "rwhatsapp")
+chat <- rwa_read(history)
+chat
+```
+
+2. La funzione principale del pacchetto, rwa_read() può gestire direttamente i file txt (e zip), il che significa che potete semplicemente fornire il percorso di un file per iniziare:
+
+```{r whatsapp}
+chat <- rwa_read("~/Desktop/D4SI/D4SI/dataset/WhatsApp Chat with Valhalla!.txt") %>% 
+  filter(!is.na(author)) # rimuove messaggi senza autori 
+chat
+```
+
+2. Puliamo i dati
+```{r whatsapp}
+to_remove <- c((stopwords),
+               "media",
+               "omitted",
+               "image",
+               "audio",
+               "video",
+               "gif"
+               )
+
+chat_clean <- chat %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words)
+
+chat_clean <- chat_clean %>%
+  na.omit(chat_clean)
+
+chat_clean <- chat_clean %>%
+  filter(!word %in% to_remove) 
+
+```
+
+3. Quanti messaggi sono stati mandati nella chat? 
+
+Crea un grafico che rappresenta tutti i messaggi mandati (n) durante un determinato periodo (day) 
+```{r pressure, echo=FALSE}
+library("ggplot2"); theme_set(theme_minimal())
+library("lubridate")
+chat %>%
+  mutate(day = date(____)) %>%
+  count(___) %>%
+  ggplot(aes(x = ___, y = ___)) +
+  geom______(stat = "identity") +
+  ylab("") + xlab("") +
+  ggtitle("Messaggi ogni giorno")
+```
+
+4. Crea un grafico a barre di chi ha mandto più messaggi nella chat
+
+```{r geombar}
+chat_clean %>%
+  mutate(day = date(time)) %>%
+  count(____) %>%
+  ggplot(aes(x = reorder(____, _____), y = n)) +
+  geom_bar(stat = "identity") +
+  ylab("") + xlab("") +
+  coord_flip() +
+  ggtitle("Numeri di messaggi per partecipante alla chat")
+```
+
+
+5. Una cosa che è sempre divertente da fare è scoprire quali sono le emoji preferite dalle persone:
+
+```{r uniche}
+chat_clean%>%
+  filter(author == "_______") %>% 
+  count(word, sort = TRUE) %>% 
+  top_n(n = _____, n) %>%
+  ggplot(aes(x = reorder(_____, _____), y = n)) +
+  geom_col(show.legend = FALSE, fill = 'steelblue') +
+  ylab("") + xlab("") +
+  ______() +
+  ggtitle("Parole uniche di _____")
+```
+
+
+```{r parole}
+library(tidytext)
+library(tidyverse)
+
+chat%>%
+  unnest_tokens(input = text,
+                output = word) %>%
+  count(_____, _____, sort = TRUE) %>%
+  group_by(author) %>%
+  top_n(n = 6, n) %>%
+  ggplot(aes(x = reorder_within(_____, ____, _____), y = n, fill = _____)) +
+  geom_col(show.legend = FALSE) +
+  ylab("") +
+  xlab("") +
+  coord_flip() +
+  facet_wrap(~_____, ncol = 2, scales = "free_y") +
+  scale_x_reordered() +
+  ggtitle("Parole più usate")
+```
+
+```{r lessico}
+chat_clean%>%
+  group_by(____) %>%
+  summarise(lex_diversity = n_distinct(word)) %>%
+  arrange(desc(lex_diversity)) %>%
+  ggplot(aes(x = reorder(______, _____),
+             y = lex_diversity,
+             fill = author)) +
+  geom_col(show.legend = FALSE) +
+  scale_y_continuous(expand = (mult = c(0, 0, 0, 500))) +
+  geom_text(aes(label = scales::comma(lex_diversity)), hjust = -0.1) +
+  ylab("Unique words") +
+  xlab("") +
+  ggtitle("Lexical Diversity") +
+  coord_flip()
+```
+
+```{r sentiment analysis}
+install.packages("textdata")
+library(textdata)
+library(tidytext)
+chat_clean <- chat %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words)
+
+chat_clean <- chat_clean %>%
+  na.omit(chat_clean)
+
+chat_clean <- chat_clean %>%
+  filter(!word %in% to_remove)
+
+chat %>%
+  group_by(author) %>%
+  ungroup() %>%
+  unnest_tokens(word, text)
+
+nrc_joy <- get_sentiments("nrc") %>% 
+  filter(sentiment == "joy")
+
+chat_clean %>%
+  filter(author == "______") %>%
+  inner_join(nrc_joy) %>%
+  count(word, sort = TRUE)
+
+```
+
+```{r sentiment analysis}
+bullring_sentiment_bing <- chat_clean %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(author, sentiment) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+```
+
+```{r sentiment analysis, echo=FAlSE}
+bullring_sentiment_afinn <- chat_clean %>%
+  inner_join(get_sentiments("afinn")) %>% 
+  group_by(author) %>% 
+  summarise(sentiment = sum(value)) %>% 
+  mutate(method = "Group Chat Sentiment")
+```
+
+```{r sentiment analysis}
+bullring_sentiment_afinn%>%
+  ggplot(aes(author, sentiment, fill = method)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~method, ncol = 3, scales = "free_y")
+```
+```{r worldcloud}
+library(wordcloud)
+
+chat_clean%>%
+  count(word) %>%
+  with(wordcloud(_____, ______,colors = c("#D55E00", "#009E73"), max.words = 100))
+
+library(reshape2)
+
+chat_clean %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  acast(word ~ sentiment, value.var = "n", fill = 0) %>%
+  comparison.cloud(colors = c("#D55E00", "#009E73"),
+                   max.words = 100)
+```
