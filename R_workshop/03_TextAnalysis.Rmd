@@ -71,7 +71,7 @@ chat %>%
   ggtitle("Messaggi ogni giorno")
 ```
 
-4. Crea un grafico a barre di chi ha mandto più messaggi nella chat
+4. Crea un grafico a barre di chi ha mandato più messaggi nella chat
 
 ```{r geombar}
 chat_clean %>%
@@ -85,7 +85,7 @@ chat_clean %>%
 ```
 
 
-5. Una cosa che è sempre divertente da fare è scoprire quali sono le emoji preferite dalle persone:
+5. Parole uniche usate da una singola persona:
 
 ```{r uniche}
 chat_clean%>%
@@ -99,7 +99,7 @@ chat_clean%>%
   ggtitle("Parole uniche di _____")
 ```
 
-
+6. Parole uniche usate da piu persone
 ```{r parole}
 library(tidytext)
 library(tidyverse)
